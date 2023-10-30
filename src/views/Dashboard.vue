@@ -1,9 +1,11 @@
 <script setup lang="ts">
   import useEmployees from '../composables/useEmployees';
 
+  function generateRange(count: number) {
+    return Array.from({ length: count }, (_, index) => index + 1);
+  }
 
-
-  const { employees, getEmployees, totalEmployees } = useEmployees()
+  const { employees, getEmployees, totalEmployees, isLoading } = useEmployees()
   getEmployees()
 
 </script>
@@ -47,53 +49,70 @@
             </thead>
 
             <tbody class="bg-white">
-              <tr v-for="(employee, index) in employees" :key="index">
-                <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0 w-10 h-10">
-                      <img class="w-10 h-10 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt="">
-                    </div>
-
-                    <div class="ml-4">
-                      <div class="text-sm font-medium leading-5 text-gray-900">
-                        {{ employee.nombre }}
+              <template v-if="isLoading">
+                <tr v-for="(a, i) in 10" :key="i">
+                  <td class="px-6 py-4 border-b">
+                    <div class="loading-skeleton py-5"></div>
+                  </td>
+                  <td class="px-6 py-4 border-b">
+                    <div class="loading-skeleton py-5"></div>
+                  </td>
+                  <td class="px-6 py-4 border-b">
+                    <div class="loading-skeleton py-5"></div>
+                  </td>
+                  <td class="px-6 py-4 border-b">
+                    <div class="loading-skeleton py-5"></div>
+                  </td>
+                  <td class="px-6 py-4 border-b">
+                    <div class="loading-skeleton py-5"></div>
+                  </td>
+                  <td class="px-6 py-4 border-b">
+                    <div class="loading-skeleton py-5"></div>
+                  </td>
+                </tr>
+              </template>
+              <template v-if="!isLoading">
+                <tr v-for="(employee, index) in employees" :key="index">
+                  <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 w-10 h-10">
+                        <img class="w-10 h-10 rounded-full"
+                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                          alt="">
                       </div>
-
+                      <div class="ml-4">
+                        <div class="text-sm font-medium leading-5 text-gray-900">
+                          {{ employee.nombre }}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </td>
-
-                <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
-                  <div class="text-sm leading-5 text-gray-500">
-                    {{ employee.cargo }}
-                  </div>
-
-                </td>
-                <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
-                  <div class="text-sm leading-5 text-gray-900">
-                    {{ employee.departamento }}
-                  </div>
-
-                </td>
-                <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
-
-                  <div class="text-sm leading-5 text-gray-500">
-                    {{ employee.oficina }}
-                  </div>
-                </td>
-
-                <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
-                  <span
-                    class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">{{
-                      employee.estadoCuenta }}</span>
-                </td>
-
-                <td class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
-                  <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                </td>
-              </tr>
+                  </td>
+                  <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
+                    <div class="text-sm leading-5 text-gray-500">
+                      {{ employee.cargo }}
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
+                    <div class="text-sm leading-5 text-gray-900">
+                      {{ employee.departamento }}
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
+                    <div class="text-sm leading-5 text-gray-500">
+                      {{ employee.oficina }}
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
+                    <span
+                      class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">{{
+                        employee.estadoCuenta }}</span>
+                  </td>
+                  <td
+                    class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
+                    <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                  </td>
+                </tr>
+              </template>
             </tbody>
           </table>
         </div>
@@ -101,3 +120,24 @@
     </div>
   </div>
 </template>
+
+<style>
+  .loading-skeleton {
+    animation: loading 1.5s infinite ease-in-out;
+    border-radius: 4px
+  }
+
+  @keyframes loading {
+    0% {
+      background-color: #f0f0f0;
+    }
+
+    50% {
+      background-color: #e0e0e0;
+    }
+
+    100% {
+      background-color: #f0f0f0;
+    }
+  }
+</style>
