@@ -1,12 +1,15 @@
 <script setup lang="ts">
-  import useEmployees from '../composables/useEmployees';
+import PaginatorComponent from '../components/PaginatorComponent.vue';
+import TableLoader from '../components/TableLoader.vue';
+import useEmployees from '../composables/useEmployees';
 
-  function generateRange(count: number) {
-    return Array.from({ length: count }, (_, index) => index + 1);
-  }
+const { employees, getEmployees, totalEmployees, isLoading, params } = useEmployees()
+getEmployees()
 
-  const { employees, getEmployees, totalEmployees, isLoading } = useEmployees()
+const onChangePage = (page: number) => {
+  params.value.page = page
   getEmployees()
+}
 
 </script>
 
@@ -49,29 +52,8 @@
             </thead>
 
             <tbody class="bg-white">
-              <template v-if="isLoading">
-                <tr v-for="(a, i) in 10" :key="i">
-                  <td class="px-6 py-4 border-b">
-                    <div class="loading-skeleton py-5"></div>
-                  </td>
-                  <td class="px-6 py-4 border-b">
-                    <div class="loading-skeleton py-5"></div>
-                  </td>
-                  <td class="px-6 py-4 border-b">
-                    <div class="loading-skeleton py-5"></div>
-                  </td>
-                  <td class="px-6 py-4 border-b">
-                    <div class="loading-skeleton py-5"></div>
-                  </td>
-                  <td class="px-6 py-4 border-b">
-                    <div class="loading-skeleton py-5"></div>
-                  </td>
-                  <td class="px-6 py-4 border-b">
-                    <div class="loading-skeleton py-5"></div>
-                  </td>
-                </tr>
-              </template>
-              <template v-if="!isLoading">
+              <TableLoader v-if="isLoading" />
+              <template v-else>
                 <tr v-for="(employee, index) in employees" :key="index">
                   <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                     <div class="flex items-center">
@@ -115,29 +97,10 @@
               </template>
             </tbody>
           </table>
+          <PaginatorComponent :limit="params.limit" :total="totalEmployees" @changePage="onChangePage" />
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style>
-  .loading-skeleton {
-    animation: loading 1.5s infinite ease-in-out;
-    border-radius: 4px
-  }
-
-  @keyframes loading {
-    0% {
-      background-color: #f0f0f0;
-    }
-
-    50% {
-      background-color: #e0e0e0;
-    }
-
-    100% {
-      background-color: #f0f0f0;
-    }
-  }
-</style>
