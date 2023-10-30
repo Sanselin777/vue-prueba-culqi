@@ -4,8 +4,6 @@
 
 
   const { employees, getEmployees, totalEmployees } = useEmployees()
-  console.log("🚀 ~ file: Dashboard.vue:7 ~ employees:", employees)
-
   getEmployees()
 
 </script>
@@ -13,7 +11,7 @@
 <template>
   <div>
     <h3 class="text-3xl font-medium text-gray-700">
-      Dashboard
+      Empleados
     </h3>
 
     <div class="mt-8" />

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { IUser } from '../models/authUser';
+import { userStorageName, tokenName } from '../helpers/consts';
 export type AuthStoreState = {
     authUser: IUser | null;
 };
@@ -7,8 +8,8 @@ export type AuthStoreState = {
 export const useAuthStoreStore = defineStore('authStore', {
     state: () =>
     ({
-        authUser: null as IUser | null,
-        tokenStorage: '' as string,
+        authUser: JSON.parse(localStorage.getItem(userStorageName) ?? 'null') as IUser | null,
+        tokenStorage: localStorage.getItem(tokenName) ?? '',
     }),
     getters: {},
     actions: {

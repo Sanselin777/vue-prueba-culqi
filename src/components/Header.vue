@@ -7,6 +7,8 @@
   const { isOpen } = useSidebar()
 
   const { onLogout } = useAuthUser()
+
+  const { user } = useAuthUser()
 </script>
 
 <template>
@@ -42,6 +44,8 @@
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
+
+      <div class="mr-2">{{ user?.nombre }}</div>
 
       <div class="relative">
         <button class="relative z-10 block w-8 h-8 overflow-hidden rounded-full shadow focus:outline-none"

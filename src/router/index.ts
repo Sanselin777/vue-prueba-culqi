@@ -27,36 +27,6 @@ const routes: RouteRecordRaw[] = [
             requiresAuth: true
         },
     },
-    {
-        path: '/forms',
-        name: 'Forms',
-        component: FormsVue,
-    },
-    {
-        path: '/cards',
-        name: 'Cards',
-        component: CardVue,
-    },
-    {
-        path: '/tables',
-        name: 'Tables',
-        component: TablesVue,
-    },
-    {
-        path: '/ui-elements',
-        name: 'UIElements',
-        component: UIElementsVue,
-    },
-    {
-        path: '/modal',
-        name: 'Modal',
-        component: ModalVue,
-    },
-    {
-        path: '/blank',
-        name: 'Blank',
-        component: BlankVue,
-    },
 ]
 
 const router = createRouter({
